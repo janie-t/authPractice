@@ -20,7 +20,7 @@ app.use(session({
 
 const users = [
   {userName: 'Roxy', password: 'Dogsforlife', isAdmin: true},
-  {userName: 'Jovey', password: 'Germanshepherdsrule', admin: false}
+  {userName: 'Jovey', password: 'Germanshepherdsrule', isAdmin: false}
 ]
 
 
@@ -47,9 +47,24 @@ app.get('/login', function(req, res, next){
   })
 })
 
+function isAuthenticated(req, res, next){
+  console.log('req.session', req.session);
+  if(req.session.isAuthenticated === true){
+    next()
+  } else {
+    res.redirect('/login')
+  }
+}
+
+function isAdmin(req, res, next){
+  if(req.session.isAdmin === true){
+    next()
+  } else {
+    res.json({message: 'Sorry, computer says NO'})
+  }
+}
 
 app.post('/login', function(req, res, next){
-
   req.session.userName = req.body.userName
   req.session.password = req.body.password
 
@@ -61,31 +76,30 @@ app.post('/login', function(req, res, next){
   if(!user) {
     return res.json({message: 'Have you registered yet?'})
   } else if( user.password === req.body.password ){
+    req.session.isAuthenticated = true
+    req.session.isAdmin = user.isAdmin
     res.json({message: 'Welcome. You are now logged in'})
   } else {
     return res.json({message: 'Do you need a password reminder?'})
   }
-  //receive the form data
-  //check the users table
-  //compare the user name
-    //if user name not exist
-      //reply with no user name
-    //if user name correct, check password
-      //if name and password correct, send 'logged in'
-      //if password incorrect send 'wrong password' message
 
 })
+
+
 
 app.get('/logout', function(req, res, next){
   res.send('You are logged out. Ka kite.')
 })
 
-app.get('/private', function(req, res, next){
-  res.send('This is a private area. Restricted. Danger. Danger')
+
+app.get('/private', isAuthenticated, function(req, res, next){
+  res.send('Hello there')
 })
 
 
-
+app.get('/admin', isAdmin, function(req, res, next){
+  res.send('You are the boss dog')
+})
 
 
 
