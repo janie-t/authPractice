@@ -1,0 +1,25 @@
+{
+  "name": "authPractice",
+  "version": "1.0.0",
+  "description": "",
+  "main": "server.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node server.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/janie-t/authPractice.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/janie-t/authPractice/issues"
+  },
+  "homepage": "https://github.com/janie-t/authPractice#readme",
+  "dependencies": {
+    "express": "^4.14.1",
+    "express-session": "^1.15.0"
+  }
+}
